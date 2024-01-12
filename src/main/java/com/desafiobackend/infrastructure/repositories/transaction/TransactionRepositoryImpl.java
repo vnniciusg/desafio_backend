@@ -50,7 +50,13 @@ public class TransactionRepositoryImpl implements TransactionRepository {
         transactionEntity.setValue(requestDTO.value());
         transactionEntity.setLocalDateTime(LocalDateTime.now());
 
-        TransactionEntity transactionEntityResponse = infraTransactionRepository.save(transactionEntity);
+        payeeEntity.setBalance(payeeEntity.getBalance().add(requestDTO.value()));
+        payerEntity.setBalance(payerEntity.getBalance().subtract(requestDTO.value()));
+
+        this.infraUserRepository.save(payeeEntity);
+        this.infraUserRepository.save(payeeEntity);
+
+        TransactionEntity transactionEntityResponse = this.infraTransactionRepository.save(transactionEntity);
 
         return transactionMapper.toTransaction(transactionEntityResponse);
 
