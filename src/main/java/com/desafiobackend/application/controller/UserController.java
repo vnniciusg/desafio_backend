@@ -5,6 +5,7 @@ import com.desafiobackend.domain.entities.user.User;
 import com.desafiobackend.dto.request.user.CreateUserRequestDTO;
 import com.desafiobackend.dto.response.user.CreateUserResponseDTO;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
 
+    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
