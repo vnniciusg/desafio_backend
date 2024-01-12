@@ -9,6 +9,8 @@ import com.desafiobackend.infrastructure.entities.UserEntity;
 import com.desafiobackend.infrastructure.mapper.transaction.TransactionMapper;
 import com.desafiobackend.infrastructure.mapper.user.UserMapper;
 import com.desafiobackend.infrastructure.repositories.user.InfraUserRepository;
+import com.desafiobackend.services.AuthorizationService;
+import com.desafiobackend.services.NotificationService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -23,13 +25,17 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     private final InfraUserRepository infraUserRepository;
     private final UserMapper userMapper;
     private final TransactionMapper transactionMapper;
+    private final AuthorizationService authorizationService;
+    private final NotificationService notificationService;
 
     @Autowired
-    public TransactionRepositoryImpl(InfraTransactionRepository infraTransactionRepository, InfraUserRepository infraUserRepository, UserMapper userMapper, TransactionMapper transactionMapper) {
+    public TransactionRepositoryImpl(InfraTransactionRepository infraTransactionRepository, InfraUserRepository infraUserRepository, UserMapper userMapper, TransactionMapper transactionMapper, AuthorizationService authorizationService, NotificationService notificationService) {
         this.infraTransactionRepository = infraTransactionRepository;
         this.infraUserRepository = infraUserRepository;
         this.userMapper = userMapper;
         this.transactionMapper = transactionMapper;
+        this.authorizationService = authorizationService;
+        this.notificationService = notificationService;
     }
 
     @Override
@@ -40,8 +46,14 @@ public class TransactionRepositoryImpl implements TransactionRepository {
         UserEntity payerEntity = infraUserRepository.findById(requestDTO.payer()).orElseThrow(() ->new EntityNotFoundException("Pagador com ID " + requestDTO.payer() + " não encontrado"));
 
         User payer = userMapper.toUser(payerEntity);
+        User payee = userMapper.toUser(payeeEntity);
 
         payer.validateTransaction(requestDTO.value());
+
+        boolean IsAuthorized = this.authorizationService.authorizeTransaction(payer, requestDTO.value());
+        if (!IsAuthorized){
+            throw new Exception("Transação não autorizada");
+        }
 
         TransactionEntity transactionEntity = new TransactionEntity();
 
@@ -57,6 +69,9 @@ public class TransactionRepositoryImpl implements TransactionRepository {
         this.infraUserRepository.save(payeeEntity);
 
         TransactionEntity transactionEntityResponse = this.infraTransactionRepository.save(transactionEntity);
+
+        notificationService.sendNotification(payer,"Transação realizada com sucesso");
+        notificationService.sendNotification(payee,"Transação recebida com sucesso");
 
         return transactionMapper.toTransaction(transactionEntityResponse);
 
