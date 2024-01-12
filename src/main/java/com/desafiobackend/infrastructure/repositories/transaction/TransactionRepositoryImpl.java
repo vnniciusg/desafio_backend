@@ -47,7 +47,7 @@ public class TransactionRepositoryImpl implements TransactionRepository {
 
         transactionEntity.setPayer(payerEntity);
         transactionEntity.setPayee(payeeEntity);
-        transactionEntity.setValue(requestDTO.value());
+        transactionEntity.setAmount(requestDTO.value());
         transactionEntity.setLocalDateTime(LocalDateTime.now());
 
         payeeEntity.setBalance(payeeEntity.getBalance().add(requestDTO.value()));

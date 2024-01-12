@@ -17,12 +17,14 @@ public class TransactionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-    private BigDecimal value;
+    @Column(name = "amount")
+    private BigDecimal amount;
     @ManyToOne
     @JoinColumn(name="payer_id")
     private UserEntity payer;
     @ManyToOne
     @JoinColumn(name="payee_id")
     private UserEntity payee;
+    @Column(name = "local_date_time")
     private LocalDateTime localDateTime;
 }

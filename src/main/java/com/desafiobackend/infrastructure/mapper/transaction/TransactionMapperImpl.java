@@ -20,7 +20,7 @@ public class TransactionMapperImpl implements TransactionMapper{
        transaction.setPayee(userMapper.toUser(transactionEntity.getPayee()));
        transaction.setPayer(userMapper.toUser(transactionEntity.getPayer()));
        transaction.setLocalDateTime(transactionEntity.getLocalDateTime());
-       transaction.setValue(transactionEntity.getValue());
+       transaction.setValue(transactionEntity.getAmount());
 
        return transaction;
 
