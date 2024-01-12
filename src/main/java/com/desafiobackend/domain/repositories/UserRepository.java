@@ -1,8 +1,7 @@
 package com.desafiobackend.domain.repositories;
 
-import com.desafiobackend.dto.request.user.CreateUserRequestDTO;
-import com.desafiobackend.dto.response.user.CreateUserResponseDTO;
+import com.desafiobackend.domain.entities.user.User;
 
 public interface UserRepository {
-    CreateUserResponseDTO createUser(CreateUserRequestDTO requestDTO);
+    User createUser(User user);
 }
