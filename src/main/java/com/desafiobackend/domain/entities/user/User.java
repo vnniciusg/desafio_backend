@@ -104,4 +104,14 @@ public class User {
     public void setUserType(UserType userType) {
         this.userType = userType;
     }
+
+
+    public void validateTransaction(User userSender , BigDecimal amount) throws Exception{
+        if(userSender.getUserType()  == UserType.MERCHANT){
+            throw new Exception("Usuário do tipo lojista não está aurtorizado a realizar transferencias");
+        }
+        if(userSender.getBalance().compareTo(amount) < 0){
+            throw new RuntimeException("Saldo insuficiente");
+        }
+    }
 }
