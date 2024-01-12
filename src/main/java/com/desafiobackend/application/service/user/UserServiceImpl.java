@@ -3,6 +3,7 @@ package com.desafiobackend.application.service.user;
 
 import com.desafiobackend.domain.entities.user.User;
 import com.desafiobackend.domain.repositories.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findById(Long id) throws Exception {
+    public User findById(Long id) throws EntityNotFoundException {
         return this.userRepository.findById(id);
     }
 }
