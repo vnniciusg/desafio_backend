@@ -5,9 +5,9 @@ import com.desafiobackend.domain.entities.user.User;
 import com.desafiobackend.dto.request.user.CreateUserRequestDTO;
 import com.desafiobackend.dto.response.user.CreateUserResponseDTO;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
@@ -21,11 +21,10 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createUser(@RequestBody CreateUserRequestDTO requestDTO ,  UriComponentsBuilder UriBuilder){
+    public ResponseEntity<CreateUserResponseDTO> createUser(@RequestBody CreateUserRequestDTO requestDTO ){
         User user = User.mapToUser(requestDTO);
         User responseDTO = this.userService.createUser(user);
-        var uri = UriBuilder.path("/users/{id}").buildAndExpand(responseDTO.getId()).toUri();
-        return ResponseEntity.created(uri).body(new CreateUserResponseDTO(responseDTO));
+        return new ResponseEntity<>(new CreateUserResponseDTO(responseDTO) , HttpStatus.CREATED);
     }
 
     @GetMapping
