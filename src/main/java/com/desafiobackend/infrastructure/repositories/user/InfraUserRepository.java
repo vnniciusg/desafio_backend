@@ -1,4 +1,4 @@
-package com.desafiobackend.infrastructure.repositories;
+package com.desafiobackend.infrastructure.repositories.user;
 
 import com.desafiobackend.infrastructure.entities.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
