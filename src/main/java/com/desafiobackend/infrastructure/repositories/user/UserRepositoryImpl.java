@@ -1,5 +1,6 @@
 package com.desafiobackend.infrastructure.repositories.user;
 
+import com.desafiobackend.application.exceptions.ResourceNotFoundException;
 import com.desafiobackend.domain.entities.user.User;
 import com.desafiobackend.domain.repositories.UserRepository;
 import com.desafiobackend.infrastructure.entities.UserEntity;
@@ -45,7 +46,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     @Transactional(readOnly = true)
     public User findById(Long id) throws EntityNotFoundException {
-        UserEntity userEntity =  this.infraUserRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Usuario não encontrado"));
+        UserEntity userEntity =  this.infraUserRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Usuario não encontrado para o ID : " + id));
         return userMapper.toUser(userEntity);
     }
 }
