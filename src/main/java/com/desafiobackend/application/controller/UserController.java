@@ -4,6 +4,7 @@ import com.desafiobackend.application.service.user.UserService;
 import com.desafiobackend.domain.entities.user.User;
 import com.desafiobackend.dto.request.user.CreateUserRequestDTO;
 import com.desafiobackend.dto.response.user.CreateUserResponseDTO;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -11,7 +12,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/users")
 public class UserController {
     private final UserService userService;
 
@@ -34,7 +35,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User>ListUser(@PathVariable Long id) throws Exception {
+    public ResponseEntity<User>ListUser(@PathVariable Long id) throws EntityNotFoundException {
         User user = this.userService.findById(id);
         return ResponseEntity.ok().body(user);
     }
