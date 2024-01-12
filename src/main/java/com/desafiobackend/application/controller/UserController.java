@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1")
 public class UserController {
@@ -18,12 +20,23 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<?> CreateUser(@RequestBody CreateUserRequestDTO requestDTO ,  UriComponentsBuilder UriBuilder){
+    public ResponseEntity<?> createUser(@RequestBody CreateUserRequestDTO requestDTO ,  UriComponentsBuilder UriBuilder){
         User user = User.mapToUser(requestDTO);
         User responseDTO = this.userService.createUser(user);
         var uri = UriBuilder.path("/users/{id}").buildAndExpand(responseDTO.getId()).toUri();
         return ResponseEntity.created(uri).body(new CreateUserResponseDTO(responseDTO));
     }
 
+    @GetMapping
+    public ResponseEntity<List<User>> listUsers(){
+        List<User> users = this.userService.listUsers();
+        return ResponseEntity.ok().body(users);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<User>ListUser(@PathVariable Long id) throws Exception {
+        User user = this.userService.findById(id);
+        return ResponseEntity.ok().body(user);
+    }
 
 }

@@ -4,6 +4,9 @@ import com.desafiobackend.domain.entities.user.User;
 import com.desafiobackend.infrastructure.entities.UserEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class UserMapperImpl implements UserMapper{
     @Override
@@ -20,5 +23,10 @@ public class UserMapperImpl implements UserMapper{
 
         return user;
 
+    }
+
+    @Override
+    public List<User> toUsers(List<UserEntity> userEntityList) {
+        return userEntityList.stream().map(this::toUser).collect(Collectors.toList());
     }
 }

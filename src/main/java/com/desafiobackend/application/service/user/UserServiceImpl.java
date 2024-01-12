@@ -3,8 +3,9 @@ package com.desafiobackend.application.service.user;
 
 import com.desafiobackend.domain.entities.user.User;
 import com.desafiobackend.domain.repositories.UserRepository;
-import com.desafiobackend.dto.request.user.CreateUserRequestDTO;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -15,9 +16,18 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
     }
 
-
     @Override
     public User createUser(User user) {
-        return null;
+        return this.userRepository.createUser(user);
+    }
+
+    @Override
+    public List<User> listUsers() {
+        return this.userRepository.listUsers();
+    }
+
+    @Override
+    public User findById(Long id) throws Exception {
+        return this.userRepository.findById(id);
     }
 }
