@@ -106,11 +106,11 @@ public class User {
     }
 
 
-    public void validateTransaction(User userSender , BigDecimal amount) throws Exception{
-        if(userSender.getUserType()  == UserType.MERCHANT){
-            throw new Exception("Usuário do tipo lojista não está aurtorizado a realizar transferencias");
+    public void validateTransaction(BigDecimal amount) throws Exception {
+        if (this.getUserType() == UserType.MERCHANT) {
+            throw new Exception("Usuário do tipo lojista não está autorizado a realizar transferências");
         }
-        if(userSender.getBalance().compareTo(amount) < 0){
+        if (this.getBalance().compareTo(amount) < 0) {
             throw new RuntimeException("Saldo insuficiente");
         }
     }
